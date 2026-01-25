@@ -1,0 +1,14 @@
+# Python自动生成的文件
+__pycache__/
+*.pyc
+*.pyo
+
+# 虚拟环境
+venv/
+.env/
+
+# PyCharm配置
+.idea/
+
+# Jupyter笔记本缓存
+.ipynb_checkpoints/
