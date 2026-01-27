@@ -48,3 +48,66 @@ print(stock_df.dtypes)
 print(stock_df.info())
 print(stock_df.describe())
 print()
+
+# 数据查看和选择
+# 1. 数据查看
+print("查看数据")
+# 查看数据
+print(df.head(3))
+print(df.tail(3))
+print(df.sample(3)) # 随机3行
+print()
+
+print("基本信息")
+# 基本信息
+print(df.shape)
+print(df.columns.tolist())
+print(df.index)
+print(df.dtypes)
+print(df.info())
+print(df.describe())
+
+# 2. 数据选择
+print("列选择和行选择")
+# 列选择
+print(df['A'])           # 选择单列
+print(df[['A', 'C']])    # 选择多列
+
+# 行选择
+print(df[0:2])           # 切片选择行
+print(df.iloc[0])        # 按位置选择行
+print(df.loc[0])         # 按索引选择行
+
+print("条件选择")
+# 条件选择
+print(df[df['A'] > 0])                    # 布尔索引
+print(df[(df['A'] > 0) & (df['C'] < 2)]) # 多条件
+print(df[df['E'].isin(['test'])])         # isin选择
+
+print("iloc和loc")
+# iloc和loc
+print(df.iloc[0:2, 1:3])
+print(df.loc[0:2, ['A', 'C']])
+
+# 数据清洗和处理
+# 1. 处理缺失值
+df1 = pd.DataFrame({
+    'A': [1, 2, np.nan, 4],
+    'B': [5, np.nan, np.nan, 8],
+    'C': [10, 20, 30, 40]
+})
+
+print("检测缺失值")
+# 检测缺失值
+print(df1.isnull())
+print(df1.isnull().sum())
+
+# 处理缺失值
+# 填充
+df_filled = df1.fillna(0)
+df_filled_mean = df1.fillna(df1.mean())
+# 删除
+df_dropped_row = df1.dropna()  # (axis = 0)
+df_dropped_col = df1.dropna(axis = 1)
+
+# 2. 数据转换
