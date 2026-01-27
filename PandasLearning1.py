@@ -23,7 +23,7 @@ print()
 
 # 2. DataFrame
 # 创建DataFrame
-df = pd.DataFrame({   #DataFrame: df
+df = pd.DataFrame({   #DataFrame: df DataFrame
     'A': 1.0,
     'B': pd.Timestamp('20260101'),
     'C': pd.Series(1, index = list(range(4)), dtype = 'float32'),
@@ -91,7 +91,7 @@ print(df.loc[0:2, ['A', 'C']])
 
 # 数据清洗和处理
 # 1. 处理缺失值
-df1 = pd.DataFrame({
+df1 = pd.DataFrame({   # df1 DataFrame
     'A': [1, 2, np.nan, 4],
     'B': [5, np.nan, np.nan, 8],
     'C': [10, 20, 30, 40]
@@ -111,3 +111,29 @@ df_dropped_row = df1.dropna()  # (axis = 0)
 df_dropped_col = df1.dropna(axis = 1)
 
 # 2. 数据转换
+# 类型转换
+df1['A'] = df1['A'].astype('float32')
+
+# 重命名列
+df_renamed_column = df1.rename(columns = {'A': 'Alpha', 'B': 'Beta', 'C': 'Gamma'})
+
+# 重置索引
+df_reset = df1.reset_index()
+
+# 替换值
+df_replaced = df1.replace({1: 100, 5: 500})
+
+# 应用函数
+df1['A_squared'] = df1['A'].apply(lambda x: x**2)
+df1['C_category'] = df1['C'].apply(lambda x: 'high' if x > 25 else 'low')
+
+# 数据操作
+# 1. 排序和排名
+# 排序
+df_sorted = df1.sort_values('A', ascending = False)
+df_sorted_multi = df.sort_values(['A', 'C'], ascending = [True, False])
+
+# 排名
+df['A_rank'] = df['A'].rank()
+
+
