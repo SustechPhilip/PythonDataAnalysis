@@ -173,18 +173,65 @@ df1['A_rank'] = df1['A'].rank()
 
 # 时间序列处理
 # 1. 时间索引
+import pandas as pd
+import numpy as np
+
+print("\n创建时间序列")
 # 创建时间序列
 dates = pd.date_range('20230101', periods=6)
 ts_df = pd.DataFrame(np.random.randn(6, 4), index=dates, columns=list('ABCD'))
+print("原始数据:")
+print(ts_df)
+print()
 
-# 时间操作
-print(ts_df['2023-01'])                  # 按月切片
-print(ts_df['2023-01-01':'2023-01-03'])  # 时间范围切片
+# 按月切片 - 注意这里需要确保索引是DatetimeIndex类型
+print("2023年1月的数据:")
+try:
+    # 方式1：使用部分日期字符串切片
+    print(ts_df.loc['2023-01'])
+except:
+    # 方式2：如果上述不行，可以尝试这样
+    print(ts_df[ts_df.index.month == 1])
+print()
 
-# 重采样
+# 时间范围切片
+print("2023-01-01到2023-01-03的数据:")
+print(ts_df.loc['2023-01-01':'2023-01-03'])
+print()
+
+# 重采样示例
+# 创建日频率数据
 daily_data = pd.Series(np.random.randn(100),
                        index=pd.date_range('2023-01-01', periods=100, freq='D'))
-monthly_mean = daily_data.resample('M').mean()    # 按月重采样
+print("日数据前5行:")
+print(daily_data.head())
+print()
+
+# 按月重采样 - 计算每月平均值
+# 注意：resample('M') 现在更推荐使用 'ME'（月末频率）
+monthly_mean = daily_data.resample('ME').mean()
+print("按月重采样后的月平均值:")
+print(monthly_mean)
+print()
+
+# 其他有用的时间序列操作
+print("其他时间序列操作示例:")
+# 1. 按季度重采样
+quarterly_mean = daily_data.resample('QE').mean()
+print("季度平均值:", quarterly_mean.head())
+
+# 时间偏移
+print("\n时间偏移（7天后）:")
+print(daily_data.head().index + pd.Timedelta(days=7))
+
+# 提取时间组件
+print("\n提取时间组件:")
+daily_data_df = daily_data.to_frame('values')
+daily_data_df['year'] = daily_data_df.index.year
+daily_data_df['month'] = daily_data_df.index.month
+daily_data_df['day'] = daily_data_df.index.day
+daily_data_df['day_of_week'] = daily_data_df.index.dayofweek
+print(daily_data_df.head())
 
 # 2. 移动窗口操作
 
