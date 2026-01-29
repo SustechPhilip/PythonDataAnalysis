@@ -2,6 +2,7 @@
 # Pandas
 import numpy as np
 import pandas as pd
+from numpy.ma.core import concatenate
 
 # Pandas基础数据结构
 # 1. Series
@@ -131,9 +132,59 @@ df1['C_category'] = df1['C'].apply(lambda x: 'high' if x > 25 else 'low')
 # 1. 排序和排名
 # 排序
 df_sorted = df1.sort_values('A', ascending = False)
-df_sorted_multi = df.sort_values(['A', 'C'], ascending = [True, False])
+df_sorted_multi = df1.sort_values(['A', 'C'], ascending = [True, False])
 
 # 排名
-df['A_rank'] = df['A'].rank()
+df1['A_rank'] = df1['A'].rank()
 
+# 2. 分组聚合
+# print('分组')
+# 分组
+# grouped = df.groupby('E')
+# print(grouped.mean())
+# print(grouped.agg({'A': 'mean', 'C': 'sum'}))
+#
+# 多级分组
+# multi_grouped = df.groupby(['E', 'F'])
+#
+# 转换和过滤
+# 转换
+# df['group_mean'] = grouped['A'].transform('mean')
+#
+# 过滤
+# filtered = grouped.filter(lambda x: x['A'].mean() > 1)
+
+# 3. 数据合并
+# 数据合并
+# df_merged1 = pd.DataFrame({'A': ['A0', 'A1'], 'B': ['B0', 'B1']})
+# df_merged2 = pd.DataFrame({'A': ['A2', 'A3'], 'B': ['B2', 'B3']})
+#
+# 连接
+# concatenated = pd.concat([df_merged1, df_merged2])
+# concatenated_keys = pd.concat([df_merged1, df_merged2], keys = ['x', 'y'])
+
+# 合并
+# left = pd.DataFrame({'key': ['K0', 'K1'], 'A': ['A0', 'A1']})
+# right = pd.DataFrame({'key': ['K0', 'K1'], 'B': ['B0', 'B1']})
+# merged = pd.merge(left, right, on = 'key')
+
+# 连接
+# joined = ( left.set_index('key') ).join( right.set_index('key') )
+
+# 时间序列处理
+# 1. 时间索引
+# 创建时间序列
+dates = pd.date_range('20230101', periods=6)
+ts_df = pd.DataFrame(np.random.randn(6, 4), index=dates, columns=list('ABCD'))
+
+# 时间操作
+print(ts_df['2023-01'])                  # 按月切片
+print(ts_df['2023-01-01':'2023-01-03'])  # 时间范围切片
+
+# 重采样
+daily_data = pd.Series(np.random.randn(100),
+                       index=pd.date_range('2023-01-01', periods=100, freq='D'))
+monthly_mean = daily_data.resample('M').mean()    # 按月重采样
+
+# 2. 移动窗口操作
 
